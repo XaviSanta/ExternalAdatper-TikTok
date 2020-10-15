@@ -11,28 +11,34 @@ See [Install Locally](#install-locally) for a quickstart
 ```json
 {
  "jobRunID": "278c97ffadb54a5bbb93cfec5f7b5503",
- "data": {
-  "result": 164
- },
+ "data": { "result": 164 },
  "result": 164,
  "statusCode": 200
 }
 ```
+This is the number of likes
 
+## Data sources
+https://www.tiktok.com/
+## Tasks
+``` json
+{
+  "initiators": [
+    { "type": "runLog" }
+  ],
+  "tasks": [
+    { "type": "¿?" },
+    { "type": "ethuint256" },
+    { "type": "ethtx" }
+  ]
+}
+```
 ## Install Locally
 
 Install dependencies:
 
 ```bash
 yarn
-```
-
-### Test
-
-Run the local tests:
-
-```bash
-yarn test
 ```
 
 Natively run the application (defaults to port 8080):
@@ -46,7 +52,7 @@ yarn start
 ## Call the external adapter/API server
 
 ```bash
-curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": { "from": "ETH", "to": "USD" } }'
+curl -X POST -H "content-type:application/json" "http://localhost:8080/" --data '{ "id": 0, "data": { "videoUrl": "https://www.tiktok.com/@tiktok/video/6881450806688664838"} }'
 ```
 
 ## Docker
