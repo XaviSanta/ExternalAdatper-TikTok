@@ -15,7 +15,6 @@ const createRequest = (input, callback) => {
   const validator = new Validator(input, customParams)
   // Check for error, and callback if exists
   if (validator.error) return callback(validator.error.statusCode, validator.error)
-  // const endpoint = validator.validated.data.endpoint || 'result'
   const jobRunID = validator.validated.id
   const videoUrl = validator.validated.data.videoUrl;
 
@@ -23,8 +22,7 @@ const createRequest = (input, callback) => {
     try {
       const videoData = await TikTokScraper.getVideoMeta(videoUrl, null)
       const response = getResponse(videoData)
-
-      response.data.result = Requester.validateResultNumber(response.data, ['result'])
+      // response.data.result = Requester.validateResultNumber(response.data, ['result'])
       callback(200, Requester.success(jobRunID, response))
     } catch (error) {
       callback(500, Requester.errored(jobRunID, error))
@@ -35,11 +33,27 @@ const createRequest = (input, callback) => {
 function getResponse (data) {
   return {
     data: {
-      result: data.diggCount
+      result: {
+        likesCount: data.diggCount,
+        playCount: data.playCount,
+        commentCount: data.commentCount,
+        shareCount: data.shareCount,
+        createTime: data.createTime,
+        musicMeta: data.musicMeta,
+        musicUrl: getMusicUrl(data.musicMeta)
+      }
     },
     status: 200
   }
 }
+
+function getMusicUrl (musicMeta) {
+  const Id = musicMeta.musicId
+  const name = musicMeta.musicName
+  const nameNoSpaces = name.replace(/\s/g, '-')
+  return `https://www.tiktok.com/music/${nameNoSpaces}-${Id}?lang=en`
+}
+
 // This is a wrapper to allow the function to work with
 // GCP Functions
 exports.gcpservice = (req, res) => {

@@ -1,4 +1,6 @@
 # Chainlink NodeJS External Adapter TikTok
+## Description 
+This Chainlink adapter returns some information on the TikTok video requested
 
 See [Install Locally](#install-locally) for a quickstart
 
@@ -10,13 +12,38 @@ See [Install Locally](#install-locally) for a quickstart
 
 ```json
 {
- "jobRunID": "278c97ffadb54a5bbb93cfec5f7b5503",
- "data": { "result": 164 },
- "result": 164,
- "statusCode": 200
+  "jobRunID": "1",
+  "data": {
+    "result": {
+      "likesCount": 4133,
+      "playCount": 18200,
+      "commentCount": 58,
+      "shareCount": 22,
+      "createTime": "1602768853",
+      "musicMeta": {
+        "musicId": "6838952489585330949",
+        "musicName": "ugly heart",
+        "musicAuthor": "elfixsounds"
+      },
+      "musicUrl": "https://www.tiktok.com/music/ugly-heart-6838952489585330949?lang=en"
+    }
+  },
+  "result": {
+    "likesCount": 4133,
+    "playCount": 18200,
+    "commentCount": 58,
+    "shareCount": 22,
+    "createTime": "1602768853",
+    "musicMeta": {
+      "musicId": "6838952489585330949",
+      "musicName": "ugly heart",
+      "musicAuthor": "elfixsounds"
+    },
+    "musicUrl": "https://www.tiktok.com/music/ugly-heart-6838952489585330949?lang=en"
+  },
+  "statusCode": 200
 }
 ```
-This is the number of likes
 
 ## Data sources
 https://www.tiktok.com/
@@ -28,8 +55,43 @@ https://www.tiktok.com/
   ],
   "tasks": [
     { "type": "¿?" },
+    { "type": "jsonparse" },
     { "type": "ethuint256" },
     { "type": "ethtx" }
+  ]
+}
+```
+## Job Spec 
+This is an example for retrieving the likes
+```json
+{
+  "initiators": [
+    {
+      "type": "runlog",
+      "params": {
+        "address": "0x000000000000000000000000000000000000000"
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "type": "¿?",
+      "params": {
+        "videoUrl": "https://www.tiktok.com/@tennistv/video/6883912584253230338?lang=en"
+      }
+    },
+    {
+      "type": "jsonparse",
+      "params": {
+        "path": "likesCount"
+      }
+    },
+    {
+      "type": "ethuint256"
+    },
+    {
+      "type": "ethtx"
+    }
   ]
 }
 ```
