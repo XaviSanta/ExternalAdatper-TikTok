@@ -53,20 +53,7 @@ https://europe-west3-sponsorproject.cloudfunctions.net/external-adapter-tiktok
 
 ## Data sources
 https://www.tiktok.com/
-## Tasks
-``` json
-{
-  "initiators": [
-    { "type": "runLog" }
-  ],
-  "tasks": [
-    { "type": "tiktok" },
-    { "type": "copy" },
-    { "type": "ethuint256" },
-    { "type": "ethtx" }
-  ]
-}
-```
+
 ## Job Spec 
 This is an example for retrieving likes or some uint in the result.
 ```json
