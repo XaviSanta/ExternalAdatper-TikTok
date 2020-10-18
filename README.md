@@ -4,6 +4,12 @@ This Chainlink adapter returns some information on the TikTok video requested
 
 See [Install Locally](#install-locally) for a quickstart
 
+## Deployed 
+  * GCP: 
+```
+https://europe-west3-sponsorproject.cloudfunctions.net/external-adapter-tiktok
+```
+
 ## Input Params
 
 - `videoUrl`: The url of the video
@@ -54,37 +60,31 @@ https://www.tiktok.com/
     { "type": "runLog" }
   ],
   "tasks": [
-    { "type": "¿?" },
-    { "type": "jsonparse" },
+    { "type": "tiktok" },
+    { "type": "copy" },
     { "type": "ethuint256" },
     { "type": "ethtx" }
   ]
 }
 ```
 ## Job Spec 
-This is an example for retrieving the likes
+This is an example for retrieving likes or some uint in the result.
 ```json
 {
   "initiators": [
     {
       "type": "runlog",
       "params": {
-        "address": "0x000000000000000000000000000000000000000"
+        "address": "YOUR_ORACLE_CONTRACT_ADDRESS"
       }
     }
   ],
   "tasks": [
     {
-      "type": "¿?",
-      "params": {
-        "videoUrl": "https://www.tiktok.com/@tennistv/video/6883912584253230338?lang=en"
-      }
+      "type": "tiktok"
     },
     {
-      "type": "jsonparse",
-      "params": {
-        "path": "likesCount"
-      }
+      "type": "copy"
     },
     {
       "type": "ethuint256"
@@ -94,6 +94,19 @@ This is an example for retrieving the likes
     }
   ]
 }
+```
+
+## Solidity interaction
+```js
+  function requestLikes(address _oracle, string _jobId)
+    public
+    onlyOwner
+  {
+    Chainlink.Request memory req = buildChainlinkRequest(stringToBytes32(_jobId), this, this.fulfillLikes.selector);
+    req.add("videoUrl", "https://www.tiktok.com/@tiktok/video/6881450806688664838");
+    req.add("copyPath", "result.likesCount");
+    sendChainlinkRequestTo(_oracle, req, ORACLE_PAYMENT);
+  }
 ```
 ## Install Locally
 

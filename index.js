@@ -6,8 +6,7 @@ const TikTokScraper = require('tiktok-scraper')
 // with a Boolean value indicating whether or not they
 // should be required.
 const customParams = {
-  videoUrl: ['videoUrl'],
-  endpoint: false
+  videoUrl: ['videoUrl']
 }
 
 const createRequest = (input, callback) => {
@@ -48,10 +47,10 @@ function getResponse (data) {
 }
 
 function getMusicUrl (musicMeta) {
-  const Id = musicMeta.musicId
+  const musicId = musicMeta.musicId
   const name = musicMeta.musicName
   const nameNoSpaces = name.replace(/\s/g, '-')
-  return `https://www.tiktok.com/music/${nameNoSpaces}-${Id}?lang=en`
+  return `https://www.tiktok.com/music/${nameNoSpaces}-${musicId}?lang=en`
 }
 
 // This is a wrapper to allow the function to work with
